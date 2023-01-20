@@ -10,6 +10,8 @@ def find_artist(api: GeniusAPI):
 
     if is_found_name_good:
         print("essa")
+    else:
+        raise NotImplementedError
 
     return found_name, api_path
 
@@ -17,6 +19,7 @@ def find_artist(api: GeniusAPI):
 def interacting_with_user():
     api = GeniusAPI()
     artist_name, artist_api_path = find_artist(api)
+    api.get_artist_albums(artist_api_path)
 
 
 if __name__ == "__main__":

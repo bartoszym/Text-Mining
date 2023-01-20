@@ -1,4 +1,5 @@
 import os
+import json
 import pprint
 import requests
 
@@ -18,6 +19,7 @@ class GeniusAPI:
         r = requests.get(
             url=self.base_url + search_endpoint, headers=self.headers, params=params
         )
+        print(r.url)
         found_artist_name = r.json()["response"]["hits"][0]["result"]["primary_artist"][
             "name"
         ]
@@ -26,3 +28,12 @@ class GeniusAPI:
         ]
 
         return found_artist_name, artist_api_path
+
+    def get_artist_albums(self, artist_url):
+        search_endpoint = "/albums"
+        r = requests.get(
+            url="https://genius.com/api" + artist_url + search_endpoint,
+            headers=self.headers,
+        )
+        print(r.url)
+        pprint.pprint(r.json())
