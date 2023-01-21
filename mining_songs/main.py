@@ -14,10 +14,11 @@ def find_artist(api: GeniusAPI):
     return found_name, api_path
 
 
-def interacting_with_user():
+def main():
     api = GeniusAPI()
     artist_name, artist_api_path = find_artist(api)
+    songs_urls = api.get_artist_songs_urls(artist_api_path)
 
 
 if __name__ == "__main__":
-    interacting_with_user()
+    main()

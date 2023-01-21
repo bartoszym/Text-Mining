@@ -1,3 +1,4 @@
+import json
 import os
 import pprint
 import requests
@@ -15,14 +16,24 @@ class GeniusAPI:
     def find_artist(self, artist_name: str) -> tuple[str, str]:
         search_endpoint = "/search"
         params = {"q": artist_name}
-        r = requests.get(
+        response_json = requests.get(
             url=self.base_url + search_endpoint, headers=self.headers, params=params
-        )
-        found_artist_name = r.json()["response"]["hits"][0]["result"]["primary_artist"][
-            "name"
-        ]
-        artist_api_path = r.json()["response"]["hits"][0]["result"]["primary_artist"][
-            "api_path"
-        ]
+        ).json()
+        found_artist_name = response_json["response"]["hits"][0]["result"][
+            "primary_artist"
+        ]["name"]
+        artist_api_path = response_json["response"]["hits"][0]["result"][
+            "primary_artist"
+        ]["api_path"]
 
         return found_artist_name, artist_api_path
+
+    def get_artist_songs_urls(self, artist_api_path: str) -> list:
+        url = self.base_url + artist_api_path + "/songs"
+        params = {"sort": "popularity"}
+        response_json = requests.get(
+            url=url, headers=self.headers, params=params
+        ).json()
+
+        songs_urls = [song["path"] for song in response_json["response"]["songs"]]
+        return songs_urls
