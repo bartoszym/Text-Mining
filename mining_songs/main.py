@@ -1,22 +1,23 @@
-from genius_api import GeniusAPI
+from musixmatch_api import MusixmatchAPI
 
 
-def find_artist(api: GeniusAPI):
+def find_artist(api: MusixmatchAPI):
     artist_name = input("Please provide artist name: ")
     found_name, api_path = api.find_artist(artist_name)
-    is_found_name_good = input(
-        f"""Is found name "{found_name}" the artist you are looking for?"""
-    )
 
-    if is_found_name_good:
-        print("essa")
+    return found_name, api_path
+
+
+def find_song(api: MusixmatchAPI):
+    song_name = input("Please provide song name: ")
+    found_name, api_path = api.find_song(song_name)
 
     return found_name, api_path
 
 
 def interacting_with_user():
-    api = GeniusAPI()
-    artist_name, artist_api_path = find_artist(api)
+    api = MusixmatchAPI()
+    _, _ = api.find_lyrics()
 
 
 if __name__ == "__main__":
