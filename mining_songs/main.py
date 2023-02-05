@@ -1,4 +1,6 @@
 from genius_api import GeniusAPI
+from data_managing import *
+from scraper import Scraper
 
 
 def find_artist(api: GeniusAPI):
@@ -17,7 +19,13 @@ def find_artist(api: GeniusAPI):
 def main():
     api = GeniusAPI()
     artist_name, artist_api_path = find_artist(api)
+    # if not is_artist_dir_exists(artist_name):
     songs_urls = api.get_artist_songs_urls(artist_api_path)
+    scraper = Scraper(songs_urls)
+    scraper.get_artist_lyrics()
+
+    print(is_artist_dir_exists(artist_name))
+    create_artist_directory(artist_name)
 
 
 if __name__ == "__main__":
