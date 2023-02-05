@@ -13,7 +13,7 @@ class GeniusAPI:
     def __init__(self) -> None:
         pass
 
-    def find_artist(self, artist_name: str) -> tuple[str, str]:
+    def find_artist(self, artist_name: str) -> tuple[str, str, str]:
         search_endpoint = "/search"
         params = {"q": artist_name}
         response_json = requests.get(
@@ -25,15 +25,22 @@ class GeniusAPI:
         artist_api_path = response_json["response"]["hits"][0]["result"][
             "primary_artist"
         ]["api_path"]
+        artist_id = response_json["response"]["hits"][0]["result"]["primary_artist"][
+            "id"
+        ]
 
-        return found_artist_name, artist_api_path
+        return found_artist_name, artist_api_path, artist_id
 
-    def get_artist_songs_urls(self, artist_api_path: str) -> list:
+    def get_artist_songs_urls(self, artist_api_path: str, artist_id: int) -> list:
         url = self.base_url + artist_api_path + "/songs"
         params = {"sort": "popularity"}
         response_json = requests.get(
             url=url, headers=self.headers, params=params
         ).json()
 
-        songs_urls = [song["path"] for song in response_json["response"]["songs"]]
+        songs_urls = {
+            song["title"]: song["path"]
+            for song in response_json["response"]["songs"]
+            if song["primary_artist"]["id"] == artist_id
+        }
         return songs_urls
