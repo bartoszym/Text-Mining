@@ -1,9 +1,10 @@
+import json
 import os
 
 DATA_PATH = os.getenv("DATA_DIRECTORY_PATH")
 
 
-def is_artist_dir_exists(artist_name: str) -> bool:
+def artist_dir_exists(artist_name: str) -> bool:
     dir_list = os.listdir(DATA_PATH)
     dir_list_lowered = [dir_name.lower() for dir_name in dir_list]
     for dir_name in dir_list_lowered:
@@ -18,3 +19,9 @@ def create_artist_directory(artist_name: str):
         os.mkdir(new_directory)
     except FileExistsError:
         print("Directory for the artist already exists")
+
+
+def save_lyrics_json(lyrics_dict: dict, artist_name: str):
+    lyrics_json = json.dumps(lyrics_dict, indent=4)
+    with open(os.path.join(DATA_PATH, artist_name, "lyrics.json"), "w") as outfile:
+        outfile.write(lyrics_json)
