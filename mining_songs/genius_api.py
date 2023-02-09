@@ -1,6 +1,4 @@
-import json
 import os
-import pprint
 import requests
 
 ACCESS_TOKEN = os.getenv("GENIUS_ACCESS_TOKEN")
@@ -15,9 +13,10 @@ class GeniusAPI:
 
     def find_artist(self, artist_name: str) -> tuple[str, str, str]:
         search_endpoint = "/search"
+        url = self.base_url + search_endpoint
         params = {"q": artist_name}
         response_json = requests.get(
-            url=self.base_url + search_endpoint, headers=self.headers, params=params
+            url=url, headers=self.headers, params=params
         ).json()
         found_artist_name = response_json["response"]["hits"][0]["result"][
             "primary_artist"
@@ -37,7 +36,6 @@ class GeniusAPI:
         response_json = requests.get(
             url=url, headers=self.headers, params=params
         ).json()
-
         songs_urls = {
             song["title"]: song["path"]
             for song in response_json["response"]["songs"]

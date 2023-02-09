@@ -12,19 +12,19 @@ class Scraper:
 
     def get_artist_lyrics(self) -> dict:
         self.lyrics_dict = {
-            title: self.extract_lyrics(song_url)
+            title: self.__extract_lyrics(song_url)
             for title, song_url in self.songs_urls_dict.items()
         }
         return self.lyrics_dict
 
-    def create_soup_object(self, url: str) -> BeautifulSoup:
+    def __create_soup_object(self, url: str) -> BeautifulSoup:
         target_url = GENIUS_URL + url
         response = requests.get(target_url)
         soup = BeautifulSoup(response.content, "html.parser")
         return soup
 
-    def extract_lyrics(self, url: str) -> str:
-        soup = self.create_soup_object(url)
+    def __extract_lyrics(self, url: str) -> str:
+        soup = self.__create_soup_object(url)
         found_divs = soup.find_all(
             "div",
             {
