@@ -3,7 +3,7 @@ from data_managing import *
 from scraper import Scraper
 
 
-def get_artist_data(api: GeniusAPI) -> tuple(str, str, str):
+def get_artist_data(api: GeniusAPI) -> tuple[str, str, str]:
     artist_name = input("Please provide artist name: ")
     found_name, api_path, artist_id = api.find_artist(artist_name)
     is_found_name_good = input(
@@ -21,8 +21,10 @@ def prepare_data() -> str:
     artist_name, artist_api_path, artist_id = get_artist_data(api)
     if not artist_dir_exists(artist_name):
         create_artist_directory(artist_name)
-        songs_urls_dict = api.get_artist_songs_urls(artist_api_path, artist_id)
-        scraper = Scraper(songs_urls_dict)
+        songs_urls_dict, language = api.get_artist_songs_urls(
+            artist_api_path, artist_id
+        )
+        scraper = Scraper(songs_urls_dict, language)
         save_lyrics_json(scraper.get_artist_lyrics(), artist_name)
 
     return artist_name

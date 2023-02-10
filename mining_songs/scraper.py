@@ -7,7 +7,8 @@ GENIUS_URL = "https://genius.com"
 
 
 class Scraper:
-    def __init__(self, songs_urls_dict: str) -> None:
+    def __init__(self, songs_urls_dict: str, language: str) -> None:
+        self.language = language
         self.songs_urls_dict = songs_urls_dict
 
     def get_artist_lyrics(self) -> dict:
@@ -15,7 +16,8 @@ class Scraper:
             title: self.__extract_lyrics(song_url)
             for title, song_url in self.songs_urls_dict.items()
         }
-        return self.lyrics_dict
+        dict_to_save = {"language": self.language, "lyrics": self.lyrics_dict}
+        return dict_to_save
 
     def __create_soup_object(self, url: str) -> BeautifulSoup:
         target_url = GENIUS_URL + url

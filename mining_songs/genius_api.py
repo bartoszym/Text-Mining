@@ -30,7 +30,9 @@ class GeniusAPI:
 
         return found_artist_name, artist_api_path, artist_id
 
-    def get_artist_songs_urls(self, artist_api_path: str, artist_id: int) -> list:
+    def get_artist_songs_urls(
+        self, artist_api_path: str, artist_id: int
+    ) -> tuple[list, str]:
         url = self.base_url + artist_api_path + "/songs"
         params = {"sort": "popularity"}
         response_json = requests.get(
@@ -41,4 +43,5 @@ class GeniusAPI:
             for song in response_json["response"]["songs"]
             if song["primary_artist"]["id"] == artist_id
         }
-        return songs_urls
+        language = response_json["response"]["songs"][0]["language"]
+        return songs_urls, language
