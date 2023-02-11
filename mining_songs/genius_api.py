@@ -34,14 +34,20 @@ class GeniusAPI:
         self, artist_api_path: str, artist_id: int
     ) -> tuple[list, str]:
         url = self.base_url + artist_api_path + "/songs"
-        params = {"sort": "popularity"}
-        response_json = requests.get(
-            url=url, headers=self.headers, params=params
-        ).json()
-        songs_urls = {
-            song["title"]: song["path"]
-            for song in response_json["response"]["songs"]
-            if song["primary_artist"]["id"] == artist_id
-        }
+        songs_urls_final = {}
+        page_number = 1
+        while len(songs_urls_final.keys()) < 70:
+            params = {"sort": "popularity", "per_page": "50", "page": f"{page_number}"}
+            response_json = requests.get(
+                url=url, headers=self.headers, params=params
+            ).json()
+            songs_urls = {
+                song["title"]: song["path"]
+                for song in response_json["response"]["songs"]
+                if song["primary_artist"]["id"] == artist_id
+            }
+            songs_urls_final.update(songs_urls)
+            page_number += 1
+        print(len(songs_urls_final))
         language = response_json["response"]["songs"][0]["language"]
-        return songs_urls, language
+        return songs_urls_final, language
