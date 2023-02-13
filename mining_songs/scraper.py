@@ -12,11 +12,11 @@ class Scraper:
         self.songs_urls_dict = songs_urls_dict
 
     def get_artist_lyrics(self) -> dict:
-        self.lyrics_dict = {
+        lyrics_dict = {
             title: self.__extract_lyrics(song_url)
             for title, song_url in self.songs_urls_dict.items()
         }
-        dict_to_save = {"language": self.language, "lyrics": self.lyrics_dict}
+        dict_to_save = {"language": self.language, "lyrics": lyrics_dict}
         return dict_to_save
 
     def __create_soup_object(self, url: str) -> BeautifulSoup:
