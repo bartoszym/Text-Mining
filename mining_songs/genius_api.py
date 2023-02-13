@@ -1,6 +1,8 @@
 import os
 import requests
 
+from typing import Union
+
 ACCESS_TOKEN = os.getenv("GENIUS_ACCESS_TOKEN")
 
 
@@ -11,7 +13,7 @@ class GeniusAPI:
     def __init__(self) -> None:
         pass
 
-    def find_artist(self, artist_name: str) -> tuple[str, str, str]:
+    def find_artist(self, artist_name: str) -> Union[str, str, str]:
         search_endpoint = "/search"
         url = self.base_url + search_endpoint
         params = {"q": artist_name}
@@ -32,7 +34,7 @@ class GeniusAPI:
 
     def get_artist_songs_urls(
         self, artist_api_path: str, artist_id: int
-    ) -> tuple[list, str]:
+    ) -> Union[list, str]:
         url = self.base_url + artist_api_path + "/songs"
         songs_urls_final = {}
         page_number = 1

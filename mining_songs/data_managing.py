@@ -1,6 +1,8 @@
 import json
 import os
 
+from typing import Union
+
 DATA_PATH = os.getenv("DATA_DIRECTORY_PATH")
 
 
@@ -27,7 +29,7 @@ def save_lyrics_json(lyrics_dict: dict, artist_name: str):
         outfile.write(lyrics_json)
 
 
-def get_artist_lyrics(artist_name: str) -> tuple[str, dict]:
+def get_artist_lyrics(artist_name: str) -> Union[str, dict]:
     with open(os.path.join(DATA_PATH, artist_name, "lyrics.json"), "r") as inputfile:
         lyrics_dict = json.load(inputfile)
         return lyrics_dict["language"], lyrics_dict["lyrics"]
