@@ -1,7 +1,13 @@
-from nltk.tokenize import word_tokenize
+from nltk.tokenize import word_tokenize, WhitespaceTokenizer
 from nltk.probability import FreqDist
 from nltk.corpus import stopwords
 from nltk.stem import SnowballStemmer
+
+
+def get_tokenized_text_whitespace(lyrics: str) -> list:
+    whitespace_tokenizer = WhitespaceTokenizer()
+    sth = whitespace_tokenizer.tokenize(lyrics)
+    return sth
 
 
 def get_tokenized_text(lyrics: str) -> list:

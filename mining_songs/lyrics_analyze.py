@@ -19,13 +19,15 @@ class Artist:
         self.language, lyrics_dict = get_artist_lyrics(artist_name)
         self.songs = []
         for title, lyrics in lyrics_dict.items():
-            tokenized_lyrics = nltk_services.get_tokenized_text(lyrics)
+            tokenized_lyrics = nltk_services.get_tokenized_text(
+                lyrics
+            )  # TODO is it necessary? definietely to rethink
             self.songs.append(Song(title, lyrics, tokenized_lyrics))
 
     def most_frequent_words(self) -> dict:
         tokens = []
-        for lyrics in self.songs:
-            tokens.extend(lyrics.tokenized_lyrics)
+        for song in self.songs:
+            tokens.extend(song.tokenized_lyrics)
         return nltk_services.get_most_frequent_words(tokens)
 
     def create_word_cloud(self):
