@@ -3,6 +3,8 @@ import requests
 
 from bs4 import BeautifulSoup
 
+from utils import progress_bar
+
 GENIUS_URL = "https://genius.com"
 
 
@@ -12,10 +14,12 @@ class Scraper:
         self.songs_urls_dict = songs_urls_dict
 
     def get_artist_lyrics(self) -> dict:
-        lyrics_dict = {
-            title: self.__extract_lyrics(song_url)
-            for title, song_url in self.songs_urls_dict.items()
-        }
+        lyrics_dict = {}
+        counter_progress = 0
+        for title, song_url in self.songs_urls_dict.items():
+            lyrics_dict[title] = self.__extract_lyrics(song_url)
+            counter_progress += 1
+            progress_bar(counter_progress, len(self.songs_urls_dict))
         dict_to_save = {"language": self.language, "lyrics": lyrics_dict}
         return dict_to_save
 
