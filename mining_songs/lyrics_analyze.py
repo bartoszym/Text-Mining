@@ -38,3 +38,21 @@ class Artist:
         word_cloud.to_file(
             os.path.join(DATA_PATH, self.artist_name, "lyrics_word_cloud.png")
         )
+
+    def get_artists_sentiment(self):
+        sentiment_dict = {
+            "neg": 0,
+            "neu": 0,
+            "pos": 0,
+            "compound": 0,
+        }
+
+        for song in self.songs:
+            song_sentiment = nltk_services.get_song_sentiment(song.lyrics)
+            for key in sentiment_dict.keys():
+                sentiment_dict[key] += song_sentiment[key]
+
+        for key in sentiment_dict.keys():
+            sentiment_dict[key] /= len(self.songs)
+
+        print(sentiment_dict)
