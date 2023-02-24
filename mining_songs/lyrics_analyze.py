@@ -4,6 +4,7 @@ import wordcloud
 from dataclasses import dataclass
 
 from data_managing import get_artist_lyrics, DATA_PATH
+from utils import progress_bar
 
 
 @dataclass
@@ -39,20 +40,41 @@ class Artist:
             os.path.join(DATA_PATH, self.artist_name, "lyrics_word_cloud.png")
         )
 
-    def get_artists_sentiment(self):
+    def get_sentiment(self) -> dict:
         sentiment_dict = {
-            "neg": 0,
-            "neu": 0,
-            "pos": 0,
-            "compound": 0,
+            "overall": {
+                "neg": 0,
+                "neu": 0,
+                "pos": 0,
+                "compound": 0,
+            },
+            "most_neg": {"score": 0, "title": "", "compound": 0},
+            "most_pos": {"score": 0, "title": "", "compound": 0},
         }
 
-        for song in self.songs:
+        def check_highest_sentiments(
+            sentiment_dict: dict, song_sentiment: dict
+        ) -> dict:
+            for i in ["pos", "neg"]:
+                if song_sentiment[i] > sentiment_dict[f"most_{i}"]["score"]:
+                    sentiment_dict[f"most_{i}"]["score"] = song_sentiment[i]
+                    sentiment_dict[f"most_{i}"]["title"] = song.title
+                    sentiment_dict[f"most_{i}"]["compound"] = song_sentiment["compound"]
+            return sentiment_dict
+
+        for counter, song in enumerate(self.songs):
+            progress_bar(counter, len(self.songs))
             song_sentiment = nltk_services.get_song_sentiment(song.lyrics)
-            for key in sentiment_dict.keys():
-                sentiment_dict[key] += song_sentiment[key]
+            for key in sentiment_dict["overall"].keys():
+                sentiment_dict["overall"][key] += song_sentiment[key]
+            sentiment_dict = check_highest_sentiments(sentiment_dict, song_sentiment)
 
-        for key in sentiment_dict.keys():
-            sentiment_dict[key] /= len(self.songs)
-
-        print(sentiment_dict)
+        for key in sentiment_dict["overall"].keys():
+            sentiment_dict["overall"][key] /= len(self.songs)
+        print(
+            f"The most positive song is {sentiment_dict['most_pos']['title']} with {sentiment_dict['most_pos']['score']} score. Compound: {sentiment_dict['most_pos']['compound']}"
+        )
+        print(
+            f"The most negative song is {sentiment_dict['most_neg']['title']} with {sentiment_dict['most_neg']['score']} score. Compound: {sentiment_dict['most_neg']['compound']}"
+        )
+        return sentiment_dict
