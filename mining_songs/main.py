@@ -36,8 +36,10 @@ def prepare_data() -> str:
 def main():
     artist_name = prepare_data()
     artist = Artist(artist_name)
+    artist.get_frequency_bar_plot(15)
+    # print(artist.most_frequent_words())
     # artist.create_word_cloud()
-    artist.get_sentiment()
+    # artist.get_sentiment()
 
 
 if __name__ == "__main__":

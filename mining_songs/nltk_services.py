@@ -15,14 +15,14 @@ def get_tokenized_text(lyrics: str) -> list:
     return word_tokenize(lyrics)
 
 
-def get_most_frequent_words(tokens: list) -> dict:
+def get_most_frequent_words(tokens: list, top_n_words: int = None) -> dict:
     stemmer = SnowballStemmer("english")
     tokens = [word.lower() for word in tokens if word.isalpha()]
     stemmed_words = [
         stemmer.stem(word) for word in tokens if word not in stopwords.words("english")
     ]
     fdist = FreqDist(stemmed_words)
-    return dict(fdist)
+    return dict(fdist.most_common(top_n_words))
 
 
 def get_song_sentiment(lyrics: str) -> dict:

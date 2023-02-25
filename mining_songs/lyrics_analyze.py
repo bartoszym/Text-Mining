@@ -1,6 +1,5 @@
+import graphics
 import nltk_services
-import os
-import wordcloud
 from dataclasses import dataclass
 
 from data_managing import get_artist_lyrics, DATA_PATH
@@ -25,20 +24,15 @@ class Artist:
             )  # TODO is it necessary? definietely to rethink
             self.songs.append(Song(title, lyrics, tokenized_lyrics))
 
-    def most_frequent_words(self) -> dict:
+    def most_frequent_words(self, top_n_words: int = None) -> dict:
         tokens = []
         for song in self.songs:
             tokens.extend(song.tokenized_lyrics)
-        return nltk_services.get_most_frequent_words(tokens)
+        return nltk_services.get_most_frequent_words(tokens, top_n_words)
 
     def create_word_cloud(self):
         frequency_distribution = self.most_frequent_words()
-        word_cloud = wordcloud.WordCloud(
-            width=800, height=800
-        ).generate_from_frequencies(frequency_distribution)
-        word_cloud.to_file(
-            os.path.join(DATA_PATH, self.artist_name, "lyrics_word_cloud.png")
-        )
+        graphics.create_word_cloud(frequency_distribution, self.artist_name)
 
     def get_sentiment(self) -> dict:
         sentiment_dict = {
@@ -78,3 +72,7 @@ class Artist:
             f"The most negative song is {sentiment_dict['most_neg']['title']} with {sentiment_dict['most_neg']['score']} score. Compound: {sentiment_dict['most_neg']['compound']}"
         )
         return sentiment_dict
+
+    def get_frequency_bar_plot(self, words_amount: int):
+        freq_dist = self.most_frequent_words(words_amount)
+        graphics.create_bar_plot(freq_dist, self.artist_name)
