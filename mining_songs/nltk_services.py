@@ -1,3 +1,6 @@
+import re
+
+from nltk.text import Text
 from nltk.tokenize import word_tokenize, WhitespaceTokenizer
 from nltk.probability import FreqDist
 from nltk.corpus import stopwords
@@ -28,3 +31,10 @@ def get_most_frequent_words(tokens: list, top_n_words: int = None) -> dict:
 def get_song_sentiment(lyrics: str) -> dict:
     sentiment_analyzer = SentimentIntensityAnalyzer()
     return sentiment_analyzer.polarity_scores(lyrics)
+
+
+def get_collocation_words(lyrics: str, n_pairs: int) -> list:
+    cleared_lyrics = re.sub(r"[',-]", "", lyrics)
+    tokens = get_tokenized_text(cleared_lyrics)
+    lyrics_text = Text(tokens)
+    return lyrics_text.collocation_list(num=n_pairs)

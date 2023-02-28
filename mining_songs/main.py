@@ -34,12 +34,15 @@ def prepare_data() -> str:
 
 
 def main():
-    artist_name = prepare_data()
+    # artist_name = prepare_data()
+    artist_name = "Mac Miller"
     artist = Artist(artist_name)
-    artist.get_frequency_bar_plot(15)
+    # print(artist.get_collocations())
+    # artist.get_frequency_bar_plot(15)
     # print(artist.most_frequent_words())
     # artist.create_word_cloud()
     # artist.get_sentiment()
+    print(artist.get_collocations(5))
 
 
 if __name__ == "__main__":

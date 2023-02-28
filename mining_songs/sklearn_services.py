@@ -5,11 +5,11 @@ from sklearn.cluster import KMeans
 from sklearn.feature_extraction.text import TfidfVectorizer
 
 
-def tf_idf(songs: list):
-    def prepare_lyrics(songs):
+def tf_idf(lyrics: list):
+    def prepare_lyrics(lyrics):
         prepared = []
-        for song in songs:
-            tokenized_song = get_tokenized_text_whitespace(song)
+        for lyric in lyrics:
+            tokenized_song = get_tokenized_text_whitespace(lyric)
             lem = WordNetLemmatizer()
             prepared_lyrics = [
                 lem.lemmatize(word)
@@ -20,7 +20,7 @@ def tf_idf(songs: list):
         return prepared
 
     tfv = TfidfVectorizer()
-    prepared_lyrics = prepare_lyrics(songs)
+    prepared_lyrics = prepare_lyrics(lyrics)
     vec_text = tfv.fit_transform(prepared_lyrics)
 
     return vec_text, tfv

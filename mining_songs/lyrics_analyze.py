@@ -1,5 +1,6 @@
 import graphics
 import nltk_services
+import sklearn_services
 from dataclasses import dataclass
 
 from data_managing import get_artist_lyrics, DATA_PATH
@@ -76,3 +77,11 @@ class Artist:
     def get_frequency_bar_plot(self, words_amount: int):
         freq_dist = self.most_frequent_words(words_amount)
         graphics.create_bar_plot(freq_dist, self.artist_name)
+
+    def get_most_significant_words(self, n_words: int = 10):
+        lyrics = [song.lyrics for song in self.songs]
+        return sklearn_services.get_most_significant_words(lyrics, n_words)
+
+    def get_collocations(self, amount: int = None) -> list:
+        lyrics = "".join([s.lyrics.lower() for s in self.songs])
+        return nltk_services.get_collocation_words(lyrics, amount)
