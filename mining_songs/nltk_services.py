@@ -44,3 +44,9 @@ def get_unique_words(lyrics: str):
     tokens = get_tokenized_text(lyrics)
     lyrics_text = Text(tokens)
     return lyrics_text.vocab()
+
+
+def get_word_concordance(lyrics: str, word: str, lines: int, width: int):
+    tokens = get_tokenized_text(lyrics)
+    lyrics_text = Text(tokens)
+    return lyrics_text.concordance(word, width=width, lines=lines)

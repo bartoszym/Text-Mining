@@ -90,3 +90,8 @@ class Artist:
 
     def get_unique_words_amount(self) -> list:
         return len(nltk_services.get_unique_words(self.str_all_lyrics()))
+
+    def get_word_contexts(self, word: str, n_lines: int = 25, line_length: int = 75):
+        return nltk_services.get_word_concordance(
+            self.str_all_lyrics(), word, n_lines, line_length
+        )
