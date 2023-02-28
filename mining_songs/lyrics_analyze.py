@@ -25,6 +25,9 @@ class Artist:
             )  # TODO is it necessary? definietely to rethink
             self.songs.append(Song(title, lyrics, tokenized_lyrics))
 
+    def str_all_lyrics(self) -> str:
+        return "".join([s.lyrics.lower() for s in self.songs])
+
     def most_frequent_words(self, top_n_words: int = None) -> dict:
         tokens = []
         for song in self.songs:
@@ -82,6 +85,8 @@ class Artist:
         lyrics = [song.lyrics for song in self.songs]
         return sklearn_services.get_most_significant_words(lyrics, n_words)
 
-    def get_collocations(self, amount: int = None) -> list:
-        lyrics = "".join([s.lyrics.lower() for s in self.songs])
-        return nltk_services.get_collocation_words(lyrics, amount)
+    def get_collocations(self, amount: int = 20) -> list:
+        return nltk_services.get_collocation_words(self.str_all_lyrics(), amount)
+
+    def get_unique_words_amount(self) -> list:
+        return len(nltk_services.get_unique_words(self.str_all_lyrics()))

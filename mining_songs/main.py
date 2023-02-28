@@ -39,10 +39,10 @@ def main():
     artist = Artist(artist_name)
     # print(artist.get_collocations())
     # artist.get_frequency_bar_plot(15)
-    # print(artist.most_frequent_words())
     # artist.create_word_cloud()
     # artist.get_sentiment()
-    print(artist.get_collocations(5))
+    print(artist.get_collocations())
+    print(artist.get_unique_words_amount())
 
 
 if __name__ == "__main__":

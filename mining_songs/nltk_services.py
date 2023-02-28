@@ -38,3 +38,9 @@ def get_collocation_words(lyrics: str, n_pairs: int) -> list:
     tokens = get_tokenized_text(cleared_lyrics)
     lyrics_text = Text(tokens)
     return lyrics_text.collocation_list(num=n_pairs)
+
+
+def get_unique_words(lyrics: str):
+    tokens = get_tokenized_text(lyrics)
+    lyrics_text = Text(tokens)
+    return lyrics_text.vocab()
