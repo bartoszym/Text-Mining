@@ -38,22 +38,12 @@ class Scraper:
                 "data-lyrics-container": "true",
             },
         )
-
-        for div in found_divs:
-            for i in div("i"):
-                i.unwrap()
-            for b in div("b"):
-                b.unwrap()
-        song_lyrics = "".join([div.get_text("\r\n") for div in found_divs])
+        song_lyrics = "".join([div.get_text(" ") for div in found_divs])
         song_lyrics = self.remove_brackets(song_lyrics)
         return song_lyrics
 
     @staticmethod
     def remove_brackets(lyrics: str) -> str:
-        lyrics = re.sub(r"\r\n\]", "]", lyrics)
-        lyrics = re.sub(r"\[.*\]", "", lyrics)
-        lyrics = re.sub(r"\[.*", "", lyrics)
-        lyrics = re.sub(r".*\]", "", lyrics)
-        lyrics = re.sub(r"\r\n\)", ")", lyrics)
-        lyrics = re.sub(r"\(.*\)", "", lyrics)
+        lyrics = re.sub(r"(\[.*?\])", "", lyrics)
+        lyrics = re.sub(r"((\().*?\))", "", lyrics)
         return lyrics
