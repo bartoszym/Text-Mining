@@ -44,6 +44,8 @@ class Scraper:
                 i.unwrap()
             for b in div("b"):
                 b.unwrap()
+        print(found_divs)
+        breakpoint()
         song_lyrics = "".join([div.get_text("\r\n") for div in found_divs])
         song_lyrics = self.remove_brackets(song_lyrics)
         return song_lyrics
@@ -56,4 +58,5 @@ class Scraper:
         lyrics = re.sub(r".*\]", "", lyrics)
         lyrics = re.sub(r"\r\n\)", ")", lyrics)
         lyrics = re.sub(r"\(.*\)", "", lyrics)
+        lyrics = lyrics.replace("(", "")
         return lyrics
