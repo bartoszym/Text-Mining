@@ -28,11 +28,16 @@ class Artist:
     def str_all_lyrics(self) -> str:
         return "".join([s.lyrics.lower() for s in self.songs])
 
-    def most_frequent_words(self, top_n_words: int = None) -> dict:
+    def all_tokens_list(self) -> list:
         tokens = []
         for song in self.songs:
             tokens.extend(song.tokenized_lyrics)
-        return nltk_services.get_most_frequent_words(tokens, top_n_words)
+        return tokens
+
+    def most_frequent_words(self, top_n_words: int = None) -> dict:
+        return nltk_services.get_most_frequent_words(
+            self.all_tokens_list(), top_n_words
+        )
 
     def create_word_cloud(self):
         frequency_distribution = self.most_frequent_words()
@@ -95,3 +100,6 @@ class Artist:
         return nltk_services.get_word_concordance(
             self.str_all_lyrics(), word, n_lines, line_length
         )
+
+    def get_ne(self):
+        nltk_services.extract_ne(self.all_tokens_list())

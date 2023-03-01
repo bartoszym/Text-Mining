@@ -6,6 +6,8 @@ from nltk.probability import FreqDist
 from nltk.corpus import stopwords
 from nltk.sentiment.vader import SentimentIntensityAnalyzer
 from nltk.stem import SnowballStemmer
+from nltk.tag import pos_tag
+from nltk.chunk import ne_chunk
 
 
 def get_tokenized_text_whitespace(lyrics: str) -> list:
@@ -50,3 +52,14 @@ def get_word_concordance(lyrics: str, word: str, lines: int, width: int):
     tokens = get_tokenized_text(lyrics)
     lyrics_text = Text(tokens)
     return lyrics_text.concordance(word, width=width, lines=lines)
+
+
+def extract_ne(words):
+    # words = word_tokenize(quote)
+    tags = pos_tag(words)
+    tree = ne_chunk(tags, binary=True)
+    return set(
+        " ".join(i[0] for i in t)
+        for t in tree
+        if hasattr(t, "label") and t.label() == "NE"
+    )
