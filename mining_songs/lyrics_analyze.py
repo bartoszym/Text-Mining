@@ -102,4 +102,4 @@ class Artist:
         )
 
     def get_ne(self):
-        nltk_services.extract_ne(self.all_tokens_list())
+        return nltk_services.extract_ne(self.str_all_lyrics())

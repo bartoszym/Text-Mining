@@ -55,9 +55,13 @@ def get_word_concordance(lyrics: str, word: str, lines: int, width: int):
 
 
 def extract_ne(words):
-    # words = word_tokenize(quote)
+    # print(words)
+    words = word_tokenize(words)
     tags = pos_tag(words)
+    # print(tags)
     tree = ne_chunk(tags, binary=True)
+    # print(tree)
+    # print(tree)
     return set(
         " ".join(i[0] for i in t)
         for t in tree
