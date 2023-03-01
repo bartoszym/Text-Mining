@@ -50,6 +50,5 @@ class GeniusAPI:
             }
             songs_urls_final.update(songs_urls)
             page_number += 1
-        print(len(songs_urls_final))
         language = response_json["response"]["songs"][0]["language"]
         return songs_urls_final, language
