@@ -34,6 +34,19 @@ class Artist:
             tokens.extend(song.tokenized_lyrics)
         return nltk_services.get_most_frequent_words(tokens, top_n_words)
 
+    def get_most_frequent_words_lengths(self, n: int) -> list:
+        all_lyrics = []
+        for song in self.songs:
+            all_lyrics.append(song.lyrics)
+        return nltk_services.get_words_length_percents(all_lyrics, n)
+
+    def create_words_lengths_pie_chart(self, n: int = 5):
+        words_lengths = self.get_most_frequent_words_lengths(n)
+        print(words_lengths)
+        graphics.create_pie_chart(
+            words_lengths, self.artist_name, f"{self.artist_name}'s words lengths"
+        )
+
     def create_word_cloud(self):
         frequency_distribution = self.most_frequent_words()
         graphics.create_word_cloud(frequency_distribution, self.artist_name)
@@ -77,9 +90,11 @@ class Artist:
         )
         return sentiment_dict
 
-    def get_frequency_bar_plot(self, words_amount: int):
+    def create_frequency_bar_plot(self, words_amount: int):
         freq_dist = self.most_frequent_words(words_amount)
-        graphics.create_bar_plot(freq_dist, self.artist_name)
+        graphics.create_bar_plot(
+            freq_dist, self.artist_name, f"{self.artist_name}'s most used words"
+        )
 
     def get_most_significant_words(self, n_words: int = 10):
         lyrics = [song.lyrics for song in self.songs]

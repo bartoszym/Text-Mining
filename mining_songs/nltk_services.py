@@ -32,6 +32,15 @@ def get_most_frequent_words(tokens: list, top_n_words: int = None) -> dict:
     return dict(fdist.most_common(top_n_words))
 
 
+def get_words_length_percents(lyrics: str, n_frequent_words: int) -> FreqDist:
+    tokens = get_tokenized_text(remove_punctuation(lyrics))
+    tokens_lengths = [len(word) for word in tokens]
+    fdist = FreqDist(tokens_lengths)
+    most_common = fdist.most_common(n_frequent_words)
+    sth = {frequency[0]: fdist.freq(frequency[0]) for frequency in most_common}
+    return sth
+
+
 def get_song_sentiment(lyrics: str) -> dict:
     sentiment_analyzer = SentimentIntensityAnalyzer()
     return sentiment_analyzer.polarity_scores(lyrics)
