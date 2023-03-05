@@ -1,5 +1,5 @@
 import re
-
+import string
 from nltk.text import Text
 from nltk.tokenize import word_tokenize, WhitespaceTokenizer
 from nltk.probability import FreqDist
@@ -10,12 +10,16 @@ from nltk.stem import SnowballStemmer
 
 def get_tokenized_text_whitespace(lyrics: str) -> list:
     whitespace_tokenizer = WhitespaceTokenizer()
-    sth = whitespace_tokenizer.tokenize(lyrics)
-    return sth
+    tokens = whitespace_tokenizer.tokenize(lyrics)
+    return tokens
 
 
 def get_tokenized_text(lyrics: str) -> list:
     return word_tokenize(lyrics)
+
+
+def remove_punctuation(lyrics: str) -> str:
+    return "".join([word for word in lyrics if word not in string.punctuation])
 
 
 def get_most_frequent_words(tokens: list, top_n_words: int = None) -> dict:
@@ -34,8 +38,7 @@ def get_song_sentiment(lyrics: str) -> dict:
 
 
 def get_collocation_words(lyrics: str, n_pairs: int) -> list:
-    cleared_lyrics = re.sub(r"[',-]", "", lyrics)
-    tokens = get_tokenized_text(cleared_lyrics)
+    tokens = get_tokenized_text(remove_punctuation(lyrics))
     lyrics_text = Text(tokens)
     return lyrics_text.collocation_list(num=n_pairs)
 
