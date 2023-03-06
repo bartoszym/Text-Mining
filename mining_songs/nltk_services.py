@@ -1,4 +1,3 @@
-import re
 import string
 from nltk.text import Text
 from nltk.tokenize import word_tokenize, WhitespaceTokenizer
@@ -20,6 +19,11 @@ def get_tokenized_text(lyrics: str) -> list:
 
 def remove_punctuation(lyrics: str) -> str:
     return "".join([word for word in lyrics if word not in string.punctuation])
+
+
+def calculate_percent_of_stopwords(lyrics: str) -> float:
+    meaningful_words = [w for w in lyrics if w not in stopwords.words("english")]
+    return len(meaningful_words) / len(lyrics)
 
 
 def get_most_frequent_words(tokens: list, top_n_words: int = None) -> dict:

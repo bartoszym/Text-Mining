@@ -110,3 +110,6 @@ class Artist:
         return nltk_services.get_word_concordance(
             self.str_all_lyrics(), word, n_lines, line_length
         )
+
+    def get_percent_of_stopwords(self) -> float:
+        return nltk_services.calculate_percent_of_stopwords(self.str_all_lyrics())
