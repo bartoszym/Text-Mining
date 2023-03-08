@@ -20,7 +20,7 @@ class Artist:
         self.language, lyrics_dict = get_artist_lyrics(artist_name)
         self.songs = []
         for title, lyrics in lyrics_dict.items():
-            tokenized_lyrics = nltk_services.get_tokenized_text(
+            tokenized_lyrics = nltk_services.tokenize_text(
                 lyrics
             )  # TODO is it necessary? definietely to rethink
             self.songs.append(Song(title, lyrics, tokenized_lyrics))
@@ -32,13 +32,13 @@ class Artist:
         tokens = []
         for song in self.songs:
             tokens.extend(song.tokenized_lyrics)
-        return nltk_services.get_most_frequent_words(tokens, top_n_words)
+        return nltk_services.most_frequent_words(tokens, top_n_words)
 
     def get_most_frequent_words_lengths(self, n: int) -> list:
         all_lyrics = []
         for song in self.songs:
             all_lyrics.append(song.lyrics)
-        return nltk_services.get_words_length_percents(all_lyrics, n)
+        return nltk_services.calculate_words_length_percent_distribution(all_lyrics, n)
 
     def create_words_lengths_pie_chart(self, n: int = 5):
         words_lengths = self.get_most_frequent_words_lengths(n)
@@ -75,7 +75,7 @@ class Artist:
 
         for counter, song in enumerate(self.songs):
             progress_bar(counter, len(self.songs))
-            song_sentiment = nltk_services.get_song_sentiment(song.lyrics)
+            song_sentiment = nltk_services.calculate_song_sentiment(song.lyrics)
             for key in sentiment_dict["overall"].keys():
                 sentiment_dict["overall"][key] += song_sentiment[key]
             sentiment_dict = check_highest_sentiments(sentiment_dict, song_sentiment)
@@ -100,8 +100,8 @@ class Artist:
         lyrics = [song.lyrics for song in self.songs]
         return sklearn_services.get_most_significant_words(lyrics, n_words)
 
-    def get_collocations(self, amount: int = 20) -> list:
-        return nltk_services.get_collocation_words(self.str_all_lyrics(), amount)
+    def get_words_appearing_together(self, amount: int = 20) -> list:
+        return nltk_services.collocation_words(self.str_all_lyrics(), amount)
 
     def get_unique_words_amount(self) -> list:
         return len(nltk_services.get_unique_words(self.str_all_lyrics()))

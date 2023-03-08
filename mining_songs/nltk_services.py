@@ -7,13 +7,13 @@ from nltk.sentiment.vader import SentimentIntensityAnalyzer
 from nltk.stem import SnowballStemmer
 
 
-def get_tokenized_text_whitespace(lyrics: str) -> list:
+def tokenize_text_whitespaces(lyrics: str) -> list:
     whitespace_tokenizer = WhitespaceTokenizer()
     tokens = whitespace_tokenizer.tokenize(lyrics)
     return tokens
 
 
-def get_tokenized_text(lyrics: str) -> list:
+def tokenize_text(lyrics: str) -> list:
     return word_tokenize(lyrics)
 
 
@@ -26,7 +26,7 @@ def calculate_percent_of_stopwords(lyrics: str) -> float:
     return len(meaningful_words) / len(lyrics)
 
 
-def get_most_frequent_words(tokens: list, top_n_words: int = None) -> dict:
+def most_frequent_words(tokens: list, top_n_words: int = None) -> dict:
     stemmer = SnowballStemmer("english")
     tokens = [word.lower() for word in tokens if word.isalpha()]
     stemmed_words = [
@@ -36,8 +36,10 @@ def get_most_frequent_words(tokens: list, top_n_words: int = None) -> dict:
     return dict(fdist.most_common(top_n_words))
 
 
-def get_words_length_percents(lyrics: str, n_frequent_words: int) -> FreqDist:
-    tokens = get_tokenized_text(remove_punctuation(lyrics))
+def calculate_words_length_percent_distribution(
+    lyrics: str, n_frequent_words: int
+) -> FreqDist:
+    tokens = tokenize_text(remove_punctuation(lyrics))
     tokens_lengths = [len(word) for word in tokens]
     fdist = FreqDist(tokens_lengths)
     most_common = fdist.most_common(n_frequent_words)
@@ -45,24 +47,24 @@ def get_words_length_percents(lyrics: str, n_frequent_words: int) -> FreqDist:
     return sth
 
 
-def get_song_sentiment(lyrics: str) -> dict:
+def calculate_song_sentiment(lyrics: str) -> dict:
     sentiment_analyzer = SentimentIntensityAnalyzer()
     return sentiment_analyzer.polarity_scores(lyrics)
 
 
-def get_collocation_words(lyrics: str, n_pairs: int) -> list:
-    tokens = get_tokenized_text(remove_punctuation(lyrics))
+def collocation_words(lyrics: str, n_pairs: int) -> list:
+    tokens = tokenize_text(remove_punctuation(lyrics))
     lyrics_text = Text(tokens)
     return lyrics_text.collocation_list(num=n_pairs)
 
 
 def get_unique_words(lyrics: str):
-    tokens = get_tokenized_text(lyrics)
+    tokens = tokenize_text(lyrics)
     lyrics_text = Text(tokens)
     return lyrics_text.vocab()
 
 
 def get_word_concordance(lyrics: str, word: str, lines: int, width: int):
-    tokens = get_tokenized_text(lyrics)
+    tokens = tokenize_text(lyrics)
     lyrics_text = Text(tokens)
     return lyrics_text.concordance(word, width=width, lines=lines)
