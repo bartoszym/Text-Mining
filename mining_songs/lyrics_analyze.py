@@ -35,10 +35,9 @@ class Artist:
         return nltk_services.most_frequent_words(tokens, top_n_words)
 
     def get_most_frequent_words_lengths(self, n: int) -> list:
-        all_lyrics = []
-        for song in self.songs:
-            all_lyrics.append(song.lyrics)
-        return nltk_services.calculate_words_length_percent_distribution(all_lyrics, n)
+        return nltk_services.calculate_words_length_percent_distribution(
+            self.str_all_lyrics(), n
+        )
 
     def create_words_lengths_pie_chart(self, n: int = 5):
         words_lengths = self.get_most_frequent_words_lengths(n)

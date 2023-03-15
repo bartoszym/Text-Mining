@@ -39,12 +39,13 @@ def most_frequent_words(tokens: list, top_n_words: int = None) -> dict:
 def calculate_words_length_percent_distribution(
     lyrics: str, n_frequent_words: int
 ) -> FreqDist:
-    tokens = tokenize_text(remove_punctuation(lyrics))
-    tokens_lengths = [len(word) for word in tokens]
+    tokens_lengths = [
+        len(token) for token in tokenize_text(lyrics) if token not in string.punctuation
+    ]
     fdist = FreqDist(tokens_lengths)
     most_common = fdist.most_common(n_frequent_words)
-    sth = {frequency[0]: fdist.freq(frequency[0]) for frequency in most_common}
-    return sth
+    distribution = {frequency[0]: fdist.freq(frequency[0]) for frequency in most_common}
+    return distribution
 
 
 def calculate_song_sentiment(lyrics: str) -> dict:
