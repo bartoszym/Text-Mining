@@ -1,6 +1,6 @@
 from nltk.corpus import stopwords
 from nltk.stem import WordNetLemmatizer
-from nltk_services import get_tokenized_text_whitespace
+from nltk_services import tokenize_text_whitespaces
 from sklearn.cluster import KMeans
 from sklearn.feature_extraction.text import TfidfVectorizer
 
@@ -9,7 +9,7 @@ def tf_idf(lyrics: list):
     def prepare_lyrics(lyrics):
         prepared = []
         for lyric in lyrics:
-            tokenized_song = get_tokenized_text_whitespace(lyric)
+            tokenized_song = tokenize_text_whitespaces(lyric)
             lem = WordNetLemmatizer()
             prepared_lyrics = [
                 lem.lemmatize(word)

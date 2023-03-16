@@ -41,7 +41,6 @@ class Artist:
 
     def create_words_lengths_pie_chart(self, n: int = 5):
         words_lengths = self.get_most_frequent_words_lengths(n)
-        print(words_lengths)
         graphics.create_pie_chart(
             words_lengths, self.artist_name, f"{self.artist_name}'s words lengths"
         )
