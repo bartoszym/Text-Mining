@@ -1,6 +1,8 @@
 import graphics
 import nltk_services
+import re
 import sklearn_services
+import spacy_services
 from dataclasses import dataclass
 
 from data_managing import get_artist_lyrics, DATA_PATH
@@ -28,11 +30,16 @@ class Artist:
     def str_all_lyrics(self) -> str:
         return "".join([s.lyrics.lower() for s in self.songs])
 
-    def most_frequent_words(self, top_n_words: int = None) -> dict:
+    def most_frequent_words_nltk(self, top_n_words: int = None) -> dict:
         tokens = []
         for song in self.songs:
             tokens.extend(song.tokenized_lyrics)
         return nltk_services.most_frequent_words(tokens, top_n_words)
+
+    def most_frequent_words_spacy(self, top_n_words: int = None) -> dict:
+        return spacy_services.most_frequent_words(
+            re.sub("\r\n", " ", self.str_all_lyrics()), top_n_words
+        )
 
     def get_most_frequent_words_lengths(self, n: int) -> list:
         return nltk_services.calculate_words_length_percent_distribution(
@@ -41,14 +48,18 @@ class Artist:
 
     def create_words_lengths_pie_chart(self, n: int = 5):
         words_lengths = self.get_most_frequent_words_lengths(n)
-        print(words_lengths)
         graphics.create_pie_chart(
             words_lengths, self.artist_name, f"{self.artist_name}'s words lengths"
         )
 
-    def create_word_cloud(self):
-        frequency_distribution = self.most_frequent_words()
-        graphics.create_word_cloud(frequency_distribution, self.artist_name)
+    def create_word_cloud(self, which_lib: str):
+        if which_lib == "nltk":
+            frequency_distribution = self.most_frequent_words_nltk()
+        elif which_lib == "spacy":
+            frequency_distribution = self.most_frequent_words_spacy()
+        else:
+            raise ValueError("Wrong value of which_lib: possible are [nltk, spacy]")
+        graphics.create_word_cloud(frequency_distribution, which_lib, self.artist_name)
 
     def get_sentiment(self) -> dict:
         sentiment_dict = {
@@ -89,10 +100,18 @@ class Artist:
         )
         return sentiment_dict
 
-    def create_frequency_bar_plot(self, words_amount: int):
-        freq_dist = self.most_frequent_words(words_amount)
+    def create_frequency_bar_plot(self, which_lib: str, words_amount: int):
+        if which_lib == "nltk":
+            freq_dist = self.most_frequent_words_nltk(words_amount)
+        elif which_lib == "spacy":
+            freq_dist = self.most_frequent_words_spacy(words_amount)
+        else:
+            raise ValueError("Wrong value of which_lib: possible are [nltk, spacy]")
         graphics.create_bar_plot(
-            freq_dist, self.artist_name, f"{self.artist_name}'s most used words"
+            freq_dist,
+            self.artist_name,
+            f"{self.artist_name}'s most used words acc to {which_lib}",
+            which_lib,
         )
 
     def get_most_significant_words(self, n_words: int = 10):
@@ -112,3 +131,6 @@ class Artist:
 
     def get_percent_of_stopwords(self) -> float:
         return nltk_services.calculate_percent_of_stopwords(self.str_all_lyrics())
+
+    def get_named_enntities(self):
+        return spacy_services.get_NERS(re.sub("\r\n", " ", self.str_all_lyrics()))
