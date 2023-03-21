@@ -26,7 +26,8 @@ def calculate_percent_of_stopwords(lyrics: str) -> float:
     return len(meaningful_words) / len(lyrics)
 
 
-def most_frequent_words(tokens: list, top_n_words: int = None) -> dict:
+def most_frequent_words(lyrics: str, top_n_words: int = None) -> dict:
+    tokens = tokenize_text(lyrics)
     stemmer = SnowballStemmer("english")
     tokens = [word.lower() for word in tokens if word.isalpha()]
     stemmed_words = [

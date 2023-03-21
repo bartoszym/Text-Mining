@@ -13,7 +13,6 @@ from utils import progress_bar
 class Song:
     title: str
     lyrics: str
-    tokenized_lyrics: str
 
 
 class Artist:
@@ -22,20 +21,14 @@ class Artist:
         self.language, lyrics_dict = get_artist_lyrics(artist_name)
         self.songs = []
         for title, lyrics in lyrics_dict.items():
-            tokenized_lyrics = nltk_services.tokenize_text(
-                lyrics
-            )  # TODO is it necessary? definietely to rethink
-            self.songs.append(Song(title, lyrics, tokenized_lyrics))
+            self.songs.append(Song(title, lyrics))
 
     def str_all_lyrics(self) -> str:
         return "".join([s.lyrics.lower() for s in self.songs])
 
     def get_most_frequent_words(self, which_lib: str, top_n_words: int = None) -> dict:
         if which_lib == "nltk":
-            tokens = []
-            for song in self.songs:
-                tokens.extend(song.tokenized_lyrics)
-            return nltk_services.most_frequent_words(tokens, top_n_words)
+            return nltk_services.most_frequent_words(self.str_all_lyrics(), top_n_words)
         elif which_lib == "spacy":
             return spacy_services.most_frequent_words(
                 re.sub("\r\n", " ", self.str_all_lyrics()), top_n_words
