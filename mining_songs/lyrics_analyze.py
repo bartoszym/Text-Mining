@@ -30,16 +30,18 @@ class Artist:
     def str_all_lyrics(self) -> str:
         return "".join([s.lyrics.lower() for s in self.songs])
 
-    def most_frequent_words_nltk(self, top_n_words: int = None) -> dict:
-        tokens = []
-        for song in self.songs:
-            tokens.extend(song.tokenized_lyrics)
-        return nltk_services.most_frequent_words(tokens, top_n_words)
-
-    def most_frequent_words_spacy(self, top_n_words: int = None) -> dict:
-        return spacy_services.most_frequent_words(
-            re.sub("\r\n", " ", self.str_all_lyrics()), top_n_words
-        )
+    def get_most_frequent_words(self, which_lib: str, top_n_words: int = None) -> dict:
+        if which_lib == "nltk":
+            tokens = []
+            for song in self.songs:
+                tokens.extend(song.tokenized_lyrics)
+            return nltk_services.most_frequent_words(tokens, top_n_words)
+        elif which_lib == "spacy":
+            return spacy_services.most_frequent_words(
+                re.sub("\r\n", " ", self.str_all_lyrics()), top_n_words
+            )
+        else:
+            raise ValueError("Wrong value of which_lib: possible are [nltk, spacy]")
 
     def get_most_frequent_words_lengths(self, n: int) -> list:
         return nltk_services.calculate_words_length_percent_distribution(
