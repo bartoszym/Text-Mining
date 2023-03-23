@@ -1,10 +1,5 @@
 from lyrics_analyze import Artist
-from user_interaction_constants import (
-    READABLE_NAMES_LIST,
-    FUNCTIONS_WITH_LIBRARY_CHOICE,
-    FUNCTIONS_WITH_NUMBER_FROM_USER,
-    MENU_ITEMS,
-)
+from mining_songs.menu_items import MENU_ITEMS
 
 
 def menu(artist_name: str):
@@ -13,11 +8,13 @@ def menu(artist_name: str):
         print(MENU_ITEMS)
         for i in MENU_ITEMS:
             print(f"{i.id + 1}: {i.human_readable_name}")
-        # for i, menu_position in enumerate(READABLE_NAMES_LIST, start=1):
-        #     print(f"{i}: {menu_position[1]}")
         selection = input("Type number of the menu item: ")
-        chosen_func_name = READABLE_NAMES_LIST[selection - 1][0]
+        chosen_item = MENU_ITEMS[selection - 1]
+        if chosen_item.library_choice:
+            selected_library = input("Choose library:\n 1. NLTK \n 2. SpaCy")
+            if selected_library not in (1, 2):
+                raise ValueError("Wrong value chosen")
+        if chosen_item.amount_by_user:
+            amount = int(input("Choose amount of words that will be provided: "))
 
-        getattr(artist, READABLE_NAMES_LIST[selection][0]("nltk", 5))
-
-        # selection
+        getattr(artist, chosen_item.function_name(selected_library, amount))
