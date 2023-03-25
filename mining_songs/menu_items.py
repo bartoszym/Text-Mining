@@ -21,7 +21,6 @@ MENU_ITEMS = [
     MenuItem(
         function_name="create_words_lengths_pie_chart",
         human_readable_name="Create pie chart with word lenghts",
-        library_choice=True,
         amount_by_user=True,
     ),
     MenuItem(
