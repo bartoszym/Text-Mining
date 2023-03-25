@@ -30,7 +30,7 @@ def menu(artist_name: str):
             continue
 
         selected_library, amount = None, None
-        if chosen_item.library_choice:
+        if chosen_item.library_choice and artist.language == "en":
             selected_library = select_library(LIBRARY_DICT)
         if chosen_item.amount_by_user:
             amount = int(input("Choose amount of words that will be provided: "))
