@@ -42,9 +42,9 @@ def get_NERS(lyrics: str):
     return NER_dict
 
 
-def get_POS(lyrics: str):
-    nlp = spacy.load("en_core_web_sm")
-    POS_dict = defaultdict(defaultdict(0))
-    doc = nlp(lyrics)
-    for token in doc:
-        POS_dict[token.pos_] = 
+# def get_POS(lyrics: str):
+#     nlp = spacy.load("en_core_web_sm")
+#     POS_dict = defaultdict(defaultdict(0))
+#     doc = nlp(lyrics)
+#     for token in doc:
+#         POS_dict[token.pos_] =
