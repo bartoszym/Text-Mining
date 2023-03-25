@@ -26,15 +26,20 @@ class Artist:
     def str_all_lyrics(self) -> str:
         return "".join([s.lyrics.lower() for s in self.songs])
 
-    def get_most_frequent_words(self, which_lib: str, amount: int = None) -> dict:
+    def get_most_frequent_words(
+        self, which_lib: str = None, amount: int = None
+    ) -> dict:
         if which_lib == "nltk":
             return nltk_services.most_frequent_words(self.str_all_lyrics(), amount)
-        elif which_lib == "spacy":
+        elif which_lib == "spacy" or which_lib == None:
+            kwargs = {"language": self.language}
             return spacy_services.most_frequent_words(
-                re.sub("\r\n", " ", self.str_all_lyrics()), amount
+                re.sub("\r\n", " ", self.str_all_lyrics()), amount, **kwargs
             )
         else:
-            raise ValueError("Wrong value of which_lib: possible are [nltk, spacy]")
+            raise ValueError(
+                "Wrong value of which_lib: possible are [nltk, spacy, None]"
+            )
 
     def get_most_frequent_words_lengths(self, amount: int) -> list:
         return nltk_services.calculate_words_length_percent_distribution(
@@ -51,7 +56,9 @@ class Artist:
         if which_lib in ["nltk", "spacy"]:
             freq_dist = self.get_most_frequent_words(which_lib)
         else:
-            raise ValueError("Wrong value of which_lib: possible are [nltk, spacy]")
+            raise ValueError(
+                "Wrong value of which_lib: possible are [nltk, spacy, None]"
+            )
         graphics.create_word_cloud(freq_dist, which_lib, self.artist_name)
 
     def get_sentiment(self) -> dict:
@@ -97,7 +104,9 @@ class Artist:
         if which_lib in ["nltk", "spacy"]:
             freq_dist = self.get_most_frequent_words(which_lib, amount)
         else:
-            raise ValueError("Wrong value of which_lib: possible are [nltk, spacy]")
+            raise ValueError(
+                "Wrong value of which_lib: possible are [nltk, spacy, None]"
+            )
         graphics.create_bar_plot(
             freq_dist,
             self.artist_name,
@@ -123,5 +132,8 @@ class Artist:
     def get_percent_of_stopwords(self) -> float:
         return nltk_services.calculate_percent_of_stopwords(self.str_all_lyrics())
 
-    def get_named_enntities(self):
-        return spacy_services.get_NERS(re.sub("\r\n", " ", self.str_all_lyrics()))
+    def get_named_entities(self):
+        kwargs = {"language": self.language}
+        return spacy_services.get_NERS(
+            re.sub("\r\n", " ", self.str_all_lyrics()), **kwargs
+        )

@@ -34,7 +34,7 @@ class Scraper:
         found_divs = soup.find_all(
             "div",
             {
-                "class": "Lyrics__Container-sc-1ynbvzw-6 YYrds",
+                "class": re.compile("Lyrics__Container.*"),
                 "data-lyrics-container": "true",
             },
         )

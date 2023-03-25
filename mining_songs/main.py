@@ -1,8 +1,8 @@
-from data_managing import *
 from genius_api import GeniusAPI
+from data_managing import *
 from lyrics_analyze import Artist
-from user_interaction import menu
 from scraper import Scraper
+from user_interaction import menu
 
 from typing import Union
 
@@ -36,12 +36,8 @@ def prepare_data() -> str:
 
 def main():
     artist_name = prepare_data()
-    artist_name = "Mac Miller"
+    # artist_name = "Mac Miller"
     menu(artist_name)
-    artist = Artist(artist_name)
-    print(getattr(artist, "get_most_frequent_words")("nltk"))
-    # print(artist.get_collocations())
-    # print(artist.get_unique_words_amount())
 
 
 if __name__ == "__main__":
