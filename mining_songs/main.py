@@ -1,23 +1,7 @@
 from genius_api import GeniusAPI
 from data_managing import *
-from lyrics_analyze import Artist
 from scraper import Scraper
-from user_interaction import menu
-
-from typing import Union
-
-
-def get_artist_data(api: GeniusAPI) -> Union[str, str, str]:
-    artist_name = input("Please provide artist name: ")
-    found_name, api_path, artist_id = api.find_artist(artist_name)
-    is_found_name_good = input(
-        f"""Is found name "{found_name}" the artist you are looking for?"""
-    )
-
-    if is_found_name_good:
-        print("essa")
-
-    return found_name, api_path, artist_id
+from user_interaction import menu, get_artist_data
 
 
 def prepare_data() -> str:
@@ -36,7 +20,6 @@ def prepare_data() -> str:
 
 def main():
     artist_name = prepare_data()
-    # artist_name = "Mac Miller"
     menu(artist_name)
 
 

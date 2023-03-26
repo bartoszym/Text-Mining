@@ -1,5 +1,8 @@
+from genius_api import GeniusAPI
 from lyrics_analyze import Artist
 from menu_items import MENU_ITEMS
+
+from typing import Union
 
 
 def select_library(LIBRARY_DICT: dict):
@@ -11,11 +14,14 @@ def select_library(LIBRARY_DICT: dict):
 
 
 def menu(artist_name: str):
+    def print_menu():
+        for i in MENU_ITEMS:
+            print(f"{i.id + 1}: {i.human_readable_name}")
+
     LIBRARY_DICT = {1: "nltk", 2: "spacy"}
     artist = Artist(artist_name)
     while True:
-        for i in MENU_ITEMS:
-            print(f"{i.id + 1}: {i.human_readable_name}")
+        print_menu()
         selection = int(input("Type number of the menu item: "))
         chosen_item = MENU_ITEMS[selection - 1]
         if chosen_item.function_name == "get_word_contexts":
@@ -45,3 +51,14 @@ def menu(artist_name: str):
         function_result = getattr(artist, chosen_item.function_name)(**params)
         print(function_result)
         wait_for_user = input("Click enter to continue...")
+
+
+def get_artist_data(api: GeniusAPI) -> Union[str, str, str]:
+    while True:
+        artist_name = input("Please provide artist name: ")
+        found_name, api_path, artist_id = api.find_artist(artist_name)
+        is_found_name_good = input(
+            f"""Is found name "{found_name}" the artist you are looking for? (y or n)"""
+        )
+        if is_found_name_good == "y":
+            return found_name, api_path, artist_id
