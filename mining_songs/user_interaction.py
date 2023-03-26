@@ -44,3 +44,4 @@ def menu(artist_name: str):
         }
         function_result = getattr(artist, chosen_item.function_name)(**params)
         print(function_result)
+        wait_for_user = input("Click enter to continue...")
