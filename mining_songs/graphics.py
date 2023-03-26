@@ -42,6 +42,7 @@ def create_word_cloud(frequency_dict: dict, which_lib: str, artist_name: str) ->
     plt.imshow(word_cloud)
     plt.axis("off")
     plt.show()
+    plt.clf()
 
     word_cloud.to_file(word_cloud_path)
     return f"The image was save under path {os.path.realpath(word_cloud_path)}"
