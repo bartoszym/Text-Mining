@@ -46,20 +46,20 @@ class Artist:
             self.str_all_lyrics(), amount
         )
 
-    def create_words_lengths_pie_chart(self, amount: int = 5):
+    def create_words_lengths_pie_chart(self, amount: int = 5) -> str:
         words_lengths = self.get_most_frequent_words_lengths(amount)
-        graphics.create_pie_chart(
+        return graphics.create_pie_chart(
             words_lengths, self.artist_name, f"{self.artist_name}'s words lengths"
         )
 
-    def create_word_cloud(self, which_lib: str):
-        if which_lib in ["nltk", "spacy"]:
+    def create_word_cloud(self, which_lib: str = None) -> str:
+        if which_lib in ["nltk", "spacy", None]:
             freq_dist = self.get_most_frequent_words(which_lib)
         else:
             raise ValueError(
                 "Wrong value of which_lib: possible are [nltk, spacy, None]"
             )
-        graphics.create_word_cloud(freq_dist, which_lib, self.artist_name)
+        return graphics.create_word_cloud(freq_dist, which_lib, self.artist_name)
 
     def get_sentiment(self) -> dict:
         sentiment_dict = {
@@ -100,18 +100,17 @@ class Artist:
         )
         return sentiment_dict
 
-    def create_frequency_bar_plot(self, which_lib: str, amount: int):
-        if which_lib in ["nltk", "spacy"]:
+    def create_frequency_bar_plot(self, amount: int, which_lib: str = None) -> str:
+        if which_lib in ["nltk", "spacy", None]:
             freq_dist = self.get_most_frequent_words(which_lib, amount)
         else:
             raise ValueError(
                 "Wrong value of which_lib: possible are [nltk, spacy, None]"
             )
-        graphics.create_bar_plot(
+        return graphics.create_bar_plot(
             freq_dist,
             self.artist_name,
-            f"{self.artist_name}'s most used words acc to",
-            which_lib,
+            f"{self.artist_name}'s most used words acc to {which_lib}",
         )
 
     def get_most_significant_words(self, amount: int = 10):
