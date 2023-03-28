@@ -41,7 +41,6 @@ def get_NERS(lyrics: str, **kwargs):
         "pl": ("date", "geogName", "orgName", "persName", "placeName", "time"),
     }
     language_package = LANGUAGES_PACKAGES[kwargs["language"]]
-    breakpoint()
     nlp = spacy.load(language_package)
     NER_dict = defaultdict(set)
     doc = nlp(lyrics)
@@ -52,9 +51,28 @@ def get_NERS(lyrics: str, **kwargs):
     return NER_dict
 
 
-# def get_POS(lyrics: str):
-#     nlp = spacy.load("en_core_web_sm")
-#     POS_dict = defaultdict(defaultdict(0))
-#     doc = nlp(lyrics)
-#     for token in doc:
-#         POS_dict[token.pos_] =
+def get_POS(lyrics: str, **kwargs):
+    language_package = LANGUAGES_PACKAGES[kwargs["language"]]
+    nlp = spacy.load(language_package)
+    POS_dict = defaultdict(int)
+    doc = nlp(lyrics)
+    interesting_pos = (
+        "ADJ",
+        "ADP",
+        "ADV",
+        "AUX",
+        "CONJ",
+        "CCONJ",
+        "INTJ",
+        "NOUN",
+        "NUM",
+        "PRON",
+        "PROPN",
+        "SCONJ",
+        "VERB",
+    )
+    for token in doc:
+        if token.pos_ in interesting_pos:
+            POS_dict[token.pos_] += 1
+
+    return dict(sorted(POS_dict.items(), key=lambda item: item[1], reverse=True))

@@ -19,7 +19,8 @@ def prepare_data() -> str:
 
 
 def main():
-    artist_name = prepare_data()
+    # artist_name = prepare_data()
+    artist_name = "Ten Typ Mes"
     menu(artist_name)
 
 

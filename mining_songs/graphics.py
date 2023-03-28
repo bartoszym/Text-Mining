@@ -17,12 +17,8 @@ def create_bar_plot(data: dict, artist_name: str, title: str) -> str:
 
 def create_pie_chart(data: dict, artist_name: str, title: str) -> str:
     labels = [f"{words_length} characters" for words_length in data.keys()]
-    labels.append("other")
-    values = [percent * 100 for percent in data.values()]
-    others_percent = 100 - sum(values)
-    values.append(others_percent)
     fig, ax = plt.subplots()
-    ax.pie(values, labels=labels, autopct="%1.1f%%")
+    ax.pie(data.values(), labels=labels, autopct="%1.1f%%")
     fig.suptitle(title)
     chart_path = os.path.join(DATA_PATH, artist_name, f"{title}_pie_chart.png")
     fig.show()
