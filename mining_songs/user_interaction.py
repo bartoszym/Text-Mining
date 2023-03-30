@@ -14,45 +14,43 @@ def select_library(LIBRARY_DICT: dict):
 
 
 def menu(artist_name: str):
-    # def print_menu():
-    #     for i in MENU_ITEMS:
-    #         print(f"{i.id + 1}: {i.human_readable_name}")
+    def print_menu():
+        for i in MENU_ITEMS:
+            print(f"{i.id + 1}: {i.human_readable_name}")
 
-    # LIBRARY_DICT = {1: "nltk", 2: "spacy"}
+    LIBRARY_DICT = {1: "nltk", 2: "spacy"}
     artist = Artist(artist_name)
-    # print(artist.get_parts_of_speech_numbers())
-    artist.create_POS_pie_chart()
-    # while True:
-    #     print_menu()
-    #     selection = int(input("Type number of the menu item: "))
-    #     chosen_item = MENU_ITEMS[selection - 1]
-    #     if chosen_item.function_name == "get_word_contexts":
-    #         chosen_word = input("Type word that you want to get contexts for: ")
-    #         chosen_amount = int(
-    #             input("Type how many lines of contexts you want to see: ")
-    #         )
-    #         chosen_line_length = int(
-    #             input("Type how long should be the lines with contexts: ")
-    #         )
-    #         artist.get_word_contexts(chosen_word, chosen_amount, chosen_line_length)
-    #         continue
+    while True:
+        print_menu()
+        selection = int(input("Type number of the menu item: "))
+        chosen_item = MENU_ITEMS[selection - 1]
+        if chosen_item.function_name == "get_word_contexts":
+            chosen_word = input("Type word that you want to get contexts for: ")
+            chosen_amount = int(
+                input("Type how many lines of contexts you want to see: ")
+            )
+            chosen_line_length = int(
+                input("Type how long should be the lines with contexts: ")
+            )
+            artist.get_word_contexts(chosen_word, chosen_amount, chosen_line_length)
+            continue
 
-    #     selected_library, amount = None, None
-    #     if chosen_item.library_choice and artist.language == "en":
-    #         selected_library = select_library(LIBRARY_DICT)
-    #     if chosen_item.amount_by_user:
-    #         amount = int(input("Choose amount of words that will be provided: "))
+        selected_library, amount = None, None
+        if chosen_item.library_choice and artist.language == "en":
+            selected_library = select_library(LIBRARY_DICT)
+        if chosen_item.amount_by_user:
+            amount = int(input("Choose amount of words that will be provided: "))
 
-    #     selected_by_user = {
-    #         "which_lib": LIBRARY_DICT[selected_library] if selected_library else None,
-    #         "amount": amount,
-    #     }
-    #     params = {
-    #         key: value for key, value in selected_by_user.items() if value is not None
-    #     }
-    #     function_result = getattr(artist, chosen_item.function_name)(**params)
-    #     print(function_result)
-    #     wait_for_user = input("Click enter to continue...")
+        selected_by_user = {
+            "which_lib": LIBRARY_DICT[selected_library] if selected_library else None,
+            "amount": amount,
+        }
+        params = {
+            key: value for key, value in selected_by_user.items() if value is not None
+        }
+        function_result = getattr(artist, chosen_item.function_name)(**params)
+        print(function_result)
+        wait_for_user = input("Click enter to continue...")
 
 
 def get_artist_data(api: GeniusAPI) -> Union[str, str, str]:
