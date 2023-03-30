@@ -18,11 +18,19 @@ def menu(artist_name: str):
         for i in MENU_ITEMS:
             print(f"{i.id + 1}: {i.human_readable_name}")
 
+    def print_menu():
+        for i in MENU_ITEMS:
+            print(f"{i.id + 1}: {i.human_readable_name}")
+
+    LIBRARY_DICT = {1: "nltk", 2: "spacy"}
     LIBRARY_DICT = {1: "nltk", 2: "spacy"}
     artist = Artist(artist_name)
     while True:
         print_menu()
-        selection = int(input("Type number of the menu item: "))
+        while True:
+            selection = int(input("Type number of the menu item: "))
+            if selection in range(len(MENU_ITEMS)):
+                break
         chosen_item = MENU_ITEMS[selection - 1]
         if chosen_item.function_name == "get_word_contexts":
             chosen_word = input("Type word that you want to get contexts for: ")
@@ -35,6 +43,11 @@ def menu(artist_name: str):
             artist.get_word_contexts(chosen_word, chosen_amount, chosen_line_length)
             continue
 
+        selected_library, amount = None, None
+        if chosen_item.library_choice and artist.language == "en":
+            selected_library = select_library(LIBRARY_DICT)
+        if chosen_item.amount_by_user:
+            amount = int(input("Choose amount of words that will be provided: "))
         selected_library, amount = None, None
         if chosen_item.library_choice and artist.language == "en":
             selected_library = select_library(LIBRARY_DICT)
