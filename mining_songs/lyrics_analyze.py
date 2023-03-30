@@ -48,6 +48,9 @@ class Artist:
 
     def create_words_lengths_pie_chart(self, amount: int = 5) -> str:
         words_lengths = self.get_most_frequent_words_lengths(amount)
+        values = [percent * 100 for percent in words_lengths.values()]
+        others_percent = (100 - sum(values)) / 100
+        words_lengths["other"] = others_percent
         return graphics.create_pie_chart(
             words_lengths, self.artist_name, f"{self.artist_name}'s words lengths"
         )
@@ -135,4 +138,18 @@ class Artist:
         kwargs = {"language": self.language}
         return spacy_services.get_NERS(
             re.sub("\r\n", " ", self.str_all_lyrics()), **kwargs
+        )
+
+    def get_parts_of_speech_numbers(self) -> dict:
+        kwargs = {"language": self.language}
+        return spacy_services.get_POS(
+            re.sub("\r\n", " ", self.str_all_lyrics()), **kwargs
+        )
+
+    def create_POS_pie_chart(self) -> str:
+        POS_dict = self.get_parts_of_speech_numbers()
+        return graphics.create_pie_chart(
+            POS_dict,
+            self.artist_name,
+            f"{self.artist_name}'s % division of Parts of Speech",
         )
