@@ -148,7 +148,6 @@ class Artist:
 
     def create_POS_pie_chart(self) -> str:
         POS_dict = self.get_parts_of_speech_numbers()
-        print(POS_dict)
         return graphics.create_pie_chart(
             POS_dict,
             self.artist_name,

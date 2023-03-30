@@ -18,7 +18,11 @@ def create_bar_plot(data: dict, artist_name: str, title: str) -> str:
 def create_pie_chart(data: dict, artist_name: str, title: str) -> str:
     labels = [f"{words_length} characters" for words_length in data.keys()]
     fig, ax = plt.subplots()
-    ax.pie(data.values(), labels=labels, autopct="%1.1f%%")
+    ax.pie(
+        data.values(),
+        labels=labels,
+        autopct=lambda pct: "{:1.1f}%".format(pct) if pct > 2 else "",
+    )
     fig.suptitle(title)
     chart_path = os.path.join(DATA_PATH, artist_name, f"{title}_pie_chart.png")
     fig.show()
@@ -38,6 +42,7 @@ def create_word_cloud(frequency_dict: dict, which_lib: str, artist_name: str) ->
     plt.imshow(word_cloud)
     plt.axis("off")
     plt.show()
+    plt.clf()
 
     word_cloud.to_file(word_cloud_path)
     return f"The image was save under path {os.path.realpath(word_cloud_path)}"
