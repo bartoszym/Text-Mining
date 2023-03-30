@@ -5,9 +5,18 @@ from menu_items import MENU_ITEMS
 from typing import Union
 
 
+def get_int_from_user(message: str) -> int:
+    while True:
+        from_user = input(message)
+        try:
+            return int(from_user)
+        except ValueError:
+            print("It's not number!")
+
+
 def select_library(LIBRARY_DICT: dict):
     while True:
-        selected_library = int(input("Choose library:\n 1. NLTK \n 2. SpaCy\n"))
+        selected_library = get_int_from_user("Choose library:\n 1. NLTK \n 2. SpaCy\n")
         if selected_library in LIBRARY_DICT.keys():
             return selected_library
         print(f"Chosen value has to be {LIBRARY_DICT.keys()}")
@@ -18,28 +27,27 @@ def menu(artist_name: str):
         for i in MENU_ITEMS:
             print(f"{i.id + 1}: {i.human_readable_name}")
 
-    def print_menu():
-        for i in MENU_ITEMS:
-            print(f"{i.id + 1}: {i.human_readable_name}")
-
-    LIBRARY_DICT = {1: "nltk", 2: "spacy"}
     LIBRARY_DICT = {1: "nltk", 2: "spacy"}
     artist = Artist(artist_name)
     while True:
         print_menu()
         while True:
-            selection = int(input("Type number of the menu item: "))
+            selection = get_int_from_user("Type number of the menu item: ")
             if selection in range(len(MENU_ITEMS)):
                 break
         chosen_item = MENU_ITEMS[selection - 1]
         if chosen_item.function_name == "get_word_contexts":
-            chosen_word = input("Type word that you want to get contexts for: ")
-            chosen_amount = int(
-                input("Type how many lines of contexts you want to see: ")
+            chosen_word = get_int_from_user(
+                "Type word that you want to get contexts for: "
             )
-            chosen_line_length = int(
-                input("Type how long should be the lines with contexts: ")
+            chosen_amount = get_int_from_user(
+                "Type how many lines of contexts you want to see: "
             )
+
+            chosen_line_length = get_int_from_user(
+                "Type how long should be the lines with contexts: "
+            )
+
             artist.get_word_contexts(chosen_word, chosen_amount, chosen_line_length)
             continue
 
@@ -47,12 +55,7 @@ def menu(artist_name: str):
         if chosen_item.library_choice and artist.language == "en":
             selected_library = select_library(LIBRARY_DICT)
         if chosen_item.amount_by_user:
-            amount = int(input("Choose amount of words that will be provided: "))
-        selected_library, amount = None, None
-        if chosen_item.library_choice and artist.language == "en":
-            selected_library = select_library(LIBRARY_DICT)
-        if chosen_item.amount_by_user:
-            amount = int(input("Choose amount of words that will be provided: "))
+            amount = get_int_from_user("Choose amount of words that will be provided: ")
 
         selected_by_user = {
             "which_lib": LIBRARY_DICT[selected_library] if selected_library else None,
