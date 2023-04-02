@@ -37,9 +37,7 @@ def menu(artist_name: str):
                 break
         chosen_item = MENU_ITEMS[selection - 1]
         if chosen_item.function_name == "get_word_contexts":
-            chosen_word = get_int_from_user(
-                "Type word that you want to get contexts for: "
-            )
+            chosen_word = input("Type word that you want to get contexts for: ")
             chosen_amount = get_int_from_user(
                 "Type how many lines of contexts you want to see: "
             )
