@@ -101,6 +101,15 @@ class Artist:
         print(
             f"The most negative song is {sentiment_dict['most_neg']['title']} with {sentiment_dict['most_neg']['score']} score. Compound: {sentiment_dict['most_neg']['compound']}"
         )
+        print(
+            f"The overall negative sentiment of the songs is {sentiment_dict['overall']['neg']}"
+        )
+        print(
+            f"The overall neutral sentiment of the songs is {sentiment_dict['overall']['neu']}"
+        )
+        print(
+            f"The overall positive sentiment of the songs is {sentiment_dict['overall']['pos']}"
+        )
         return sentiment_dict
 
     def create_frequency_bar_plot(self, amount: int, which_lib: str = None) -> str:
