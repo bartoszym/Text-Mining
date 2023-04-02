@@ -33,7 +33,7 @@ def menu(artist_name: str):
         print_menu()
         while True:
             selection = get_int_from_user("Type number of the menu item: ")
-            if selection in range(len(MENU_ITEMS)):
+            if selection in range(len(MENU_ITEMS) + 1):
                 break
         chosen_item = MENU_ITEMS[selection - 1]
         if chosen_item.function_name == "get_word_contexts":
