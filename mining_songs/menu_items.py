@@ -19,24 +19,8 @@ MENU_ITEMS = [
         amount_by_user=True,
     ),
     MenuItem(
-        function_name="create_words_lengths_pie_chart",
-        human_readable_name="Create pie chart with word lenghts",
-        amount_by_user=True,
-    ),
-    MenuItem(
-        function_name="create_word_cloud",
-        human_readable_name="Create world cloud",
-        library_choice=True,
-    ),
-    MenuItem(
         function_name="get_sentiment",
         human_readable_name="Show sentiment of artist's songs",
-    ),
-    MenuItem(
-        function_name="create_frequency_bar_plot",
-        human_readable_name="Create bar plot with most frequent words",
-        library_choice=True,
-        amount_by_user=True,
     ),
     MenuItem(
         function_name="get_most_significant_words",
@@ -64,5 +48,21 @@ MENU_ITEMS = [
     MenuItem(
         function_name="get_named_entities",
         human_readable_name="Show the list of appearing named entities",
+    ),
+    MenuItem(
+        function_name="create_frequency_bar_plot",
+        human_readable_name="Create bar plot with most frequent words",
+        library_choice=True,
+        amount_by_user=True,
+    ),
+    MenuItem(
+        function_name="create_word_cloud",
+        human_readable_name="Create world cloud",
+        library_choice=True,
+    ),
+    MenuItem(
+        function_name="create_words_lengths_pie_chart",
+        human_readable_name="Create pie chart with word lenghts",
+        amount_by_user=True,
     ),
 ]
