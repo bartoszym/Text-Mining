@@ -22,8 +22,8 @@ def remove_punctuation(lyrics: str) -> str:
 
 
 def calculate_percent_of_stopwords(lyrics: str) -> float:
-    meaningful_words = [w for w in lyrics if w not in stopwords.words("english")]
-    return len(meaningful_words) / len(lyrics)
+    stop_words = [w for w in lyrics if w in stopwords.words("english")]
+    return len(stop_words) / len(lyrics)
 
 
 def most_frequent_words(lyrics: str, top_n_words: int = None) -> dict:

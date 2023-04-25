@@ -1,5 +1,4 @@
 import spacy
-
 from collections import Counter, defaultdict
 
 LANGUAGES_PACKAGES = {"en": "en_core_web_sm", "pl": "pl_core_news_sm"}
@@ -51,7 +50,7 @@ def get_NERS(lyrics: str, **kwargs):
     return NER_dict
 
 
-def get_POS(lyrics: str, **kwargs):
+def get_POS(lyrics: str, **kwargs) -> list:
     language_package = LANGUAGES_PACKAGES[kwargs["language"]]
     nlp = spacy.load(language_package)
     POS_dict = defaultdict(int)
@@ -75,4 +74,15 @@ def get_POS(lyrics: str, **kwargs):
         if token.pos_ in interesting_pos:
             POS_dict[token.pos_] += 1
 
-    return dict(sorted(POS_dict.items(), key=lambda item: item[1], reverse=True))
+    return sorted(POS_dict.items(), key=lambda item: item[1], reverse=True)
+
+
+def percent_stopwords(lyrics: str, **kwargs) -> list:
+    language_package = LANGUAGES_PACKAGES[kwargs["language"]]
+    nlp = spacy.load(language_package)
+    doc = nlp(lyrics)
+    counter = 0
+    for token in doc:
+        if token.is_stop:
+            counter += 1
+    return counter / len(doc)

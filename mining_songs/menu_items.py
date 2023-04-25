@@ -50,6 +50,10 @@ MENU_ITEMS = [
         human_readable_name="Show the list of appearing named entities",
     ),
     MenuItem(
+        function_name="get_parts_of_speech_numbers",
+        human_readable_name="Show amounts of Parts of Speech",
+    ),
+    MenuItem(
         function_name="create_frequency_bar_plot",
         human_readable_name="Create bar plot with most frequent words",
         library_choice=True,
@@ -64,5 +68,13 @@ MENU_ITEMS = [
         function_name="create_words_lengths_pie_chart",
         human_readable_name="Create pie chart with word lenghts",
         amount_by_user=True,
+    ),
+    MenuItem(
+        function_name="create_POS_pie_chart",
+        human_readable_name="Create pie chart with % of Parts of Speech",
+    ),
+    MenuItem(
+        function_name="get_percent",
+        human_readable_name="Show how many % of words are stopwords Spacy",
     ),
 ]

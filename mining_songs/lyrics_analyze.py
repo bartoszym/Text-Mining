@@ -5,7 +5,7 @@ import sklearn_services
 import spacy_services
 from dataclasses import dataclass
 
-from data_managing import get_artist_lyrics, DATA_PATH
+from data_managing import get_artist_lyrics
 from utils import progress_bar
 
 
@@ -143,20 +143,32 @@ class Artist:
     def get_percent_of_stopwords(self) -> float:
         return nltk_services.calculate_percent_of_stopwords(self.str_all_lyrics())
 
+    def get_percent(self) -> float:
+        kwargs = {"language": self.language}
+        return spacy_services.percent_stopwords(self.str_all_lyrics(), **kwargs)
+
     def get_named_entities(self):
         kwargs = {"language": self.language}
-        return spacy_services.get_NERS(
+        ners = spacy_services.get_NERS(
             re.sub("\r\n", " ", self.str_all_lyrics()), **kwargs
         )
+        for key, value in ners.items():
+            print(f"{key}:")
+            for i, j in enumerate(value):
+                print(j, end=", ")
+                if i % 10 == 0:
+                    print("")
+            print("")
+        return ners
 
-    def get_parts_of_speech_numbers(self) -> dict:
+    def get_parts_of_speech_numbers(self) -> list:
         kwargs = {"language": self.language}
         return spacy_services.get_POS(
             re.sub("\r\n", " ", self.str_all_lyrics()), **kwargs
         )
 
     def create_POS_pie_chart(self) -> str:
-        POS_dict = self.get_parts_of_speech_numbers()
+        POS_dict = dict(self.get_parts_of_speech_numbers())
         return graphics.create_pie_chart(
             POS_dict,
             self.artist_name,

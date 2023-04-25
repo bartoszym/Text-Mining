@@ -63,7 +63,9 @@ def menu(artist_name: str):
             key: value for key, value in selected_by_user.items() if value is not None
         }
         function_result = getattr(artist, chosen_item.function_name)(**params)
-        print(function_result)
+        from pprint import pprint
+
+        pprint(function_result)
         wait_for_user = input("Click enter to continue...")
 
 

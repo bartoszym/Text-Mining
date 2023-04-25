@@ -3,10 +3,13 @@ import os
 
 from typing import Union
 
-DATA_PATH = os.getenv("DATA_DIRECTORY_PATH")
+DATA_PATH = os.getenv("DATA_DIRECTORY_PATH", os.path.join("mining_songs", "data"))
 
 
 def artist_dir_exists(artist_name: str) -> bool:
+    if not os.path.isdir(DATA_PATH):
+        print("creating dict")
+        os.mkdir(DATA_PATH)
     dir_list = os.listdir(DATA_PATH)
     dir_list_lowered = [dir_name.lower() for dir_name in dir_list]
     for dir_name in dir_list_lowered:
